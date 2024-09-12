@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Liste de Tâches</title>
+</head>
+<body>
+<h1>Liste de Tâches</h1>
+<input type="text" id="taskInput" placeholder="Ajouter une nouvelle tâche">
+<button onclick="addTask()">Ajouter</button>
+<ul id="taskList">
+  <!-- Les tâches ajoutées seront affichées ici -->
+</ul>
+<script >
+  
+
+let tasks = []; // Tableau pour stocker les tâches
+
+function addTask() {
+  const taskInput = document.getElementById('taskInput');
+  const taskText = taskInput.value.trim(); // Récupère la valeur du champ de texte et supprime les espaces vides
+  
+  if (taskText !== '') { // Vérifie si le champ n'est pas vide
+    tasks.push({ text: taskText, completed: false }); // Ajoute la tâche au tableau
+    taskInput.value = ''; // Efface le contenu du champ de texte
+    
+    displayTasks(); // Affiche les tâches mises à jour
+  }
+}
+
+function deleteTask(index) {
+  tasks.splice(index, 1); // Supprime la tâche du tableau en utilisant son index
+  displayTasks(); // Affiche les tâches mises à jour
+}
+
+function toggleTask(index) {
+  tasks[index].completed = !tasks[index].completed; // Inverse l'état de complétion de la tâche
+  displayTasks(); // Affiche les tâches mises à jour
+}
+
+function displayTasks() {
+  const taskList = document.getElementById('taskList');
+  taskList.innerHTML = ''; // Efface la liste actuelle de tâches
+  
+  tasks.forEach((task, index) => {
+    const li = document.createElement('li');
+    li.textContent = task.text;
+    
+    if (task.completed) {
+      li.style.textDecoration = 'line-through'; // Barre les tâches terminées
+    }
+    
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = 'Supprimer';
+    deleteButton.onclick = () => deleteTask(index);
+    
+    const toggleButton = document.createElement('button');
+    toggleButton.textContent = 'Terminée';
+    toggleButton.onclick = () => toggleTask(index);
+    
+    li.appendChild(deleteButton);
+    li.appendChild(toggleButton);
+    taskList.appendChild(li);
+  });
+}
+
+</script>
+</body>
+</html>
+
